@@ -1,67 +1,38 @@
-var patientRecordApp = new Vue({
-  el: '#patientRecordApp',
+var patientRecordsApp = new Vue({
+  el: '#patientRecordsApp',
   data: {
     patients: [],
-    formPatient:{
-      firstName: '',
-      lastName:'',
-      dob: '',
-      sexAtBirth:''
-      }
-    }
+    recordPatient: {}
   },
-
-  //methods will be what fetches the data, where at and then what it will do (then)
   methods: {
     fetchPatients() {
-      fetch('dummy.php') //this could be a URL of where you're getting the data
-      .then( response => response.json() ) //will print JSON to console
-      .then( json => {patientRecordApp.patients = json})
-      ;
-
-    handleCreateRecord(event) {
-
+      fetch('api/patients.php')
+      .then(response => response.json())
+      .then(json => { patientRecordsApp.patients = json })
+    },
+    handleSubmit(event) {
+      // fetch(url, {
+      //   method: 'post',
+      //   data: this.recordPatient
+      // })
+      // .then( ... )
+      this.patients.push( this.recordPatient );
+      this.handleReset();
+    },
+    handleReset() {
+      this.recordPatient = {
+        firstName: '',
+        lastName: '',
+        dob: '',
+        sexAtBirth: ''
+      }
+    },
+    handleRowClick(patient) {
+      patientTriageApp.patient = patient;
     }
-
-      // Means the same at this
-      // fetch('https://randomuser.me/api/')
-      // .then(function(response) {return response.json()})
-      // .then(function(json) {waitingApp.people = json});
-
-    }
-  },
+  }, // end methods
   created() {
-    this.fetchPatients(); // need this.function name in the created for the methods function to be found
+    this.handleReset();
+    this.fetchPatients();
   }
-})
-
-
-
-
-
-
-
-
-// var waitingApp = new Vue({
-//   el: '#patientWaitingApp',
-//   data: {
-//     patients: []
-//   },
-//   methods: {
-//     fetchPatients() {
-//       fetch('dummy.php')
-//       .then(response => response.json())
-//       .then(json => {waitingApp.patients = json});
-//
-//       // Means the same at this
-//       // fetch('https://randomuser.me/api/')
-//       // .then(function(response) {return response.json()})
-//       // .then(function(json) {waitingApp.people = json});
-//
-//     }
-//   },
-//   created: function() {
-//     this.fetchPatients();
-//   }
-//
-// })
+});

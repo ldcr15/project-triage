@@ -7,7 +7,6 @@ var patientRecordApp = new Vue({
       lastName:'',
       dob: '',
       sexAtBirth:''
-      }
     }
   },
 
@@ -18,9 +17,15 @@ var patientRecordApp = new Vue({
       .then( response => response.json() ) //will print JSON to console
       .then( json => {patientRecordApp.patients = json})
       ;
-
+    },
     handleCreateRecord(event) {
-
+      this.patients.push(this.createRecord);
+      this.createRecord = {
+        firstName: '',
+        lastName:'',
+        dob: '',
+        sexAtBirth:''
+      }
     }
 
       // Means the same at this
@@ -28,7 +33,6 @@ var patientRecordApp = new Vue({
       // .then(function(response) {return response.json()})
       // .then(function(json) {waitingApp.people = json});
 
-    }
   },
   created() {
     this.fetchPatients(); // need this.function name in the created for the methods function to be found
